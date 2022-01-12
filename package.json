@@ -50,11 +50,21 @@
   "bugs": {
     "url": "https://github.com/tomchen/example-typescript-package/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@fidm/x509": "^1.2.1",
+    "bignumber.js": "^9.0.2",
+    "camelcase-keys": "^7.0.1",
+    "crypto-js": "^4.1.1",
+    "iconv-lite": "^0.6.3",
+    "lodash": "^4.17.21",
+    "snakecase-keys": "^5.1.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
+    "@types/crypto-js": "^4.1.0",
     "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
