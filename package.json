@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@fidm/x509": "^1.2.1",
+    "axios": "^0.24.0",
     "bignumber.js": "^9.0.2",
     "camelcase-keys": "^7.0.1",
     "crypto-js": "^4.1.1",
