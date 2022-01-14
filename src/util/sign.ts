@@ -31,7 +31,7 @@ const sign = (
     bizContent,
     needEncrypt,
     ...restParams
-  }: SignParams & { bizContent: { [key: string]: string } },
+  }: SignParams & { bizContent?: { [key: string]: string } },
   {
     appId,
     charset,
@@ -43,7 +43,7 @@ const sign = (
     encryptKey,
     privateKey,
   }: SDKConfig
-): SignParams & { sign: string; bizContent?: string } => {
+): { [key: string]: string } & { sign: string; bizContent?: string } => {
   const params: { [key: string]: string | undefined } = {
     ...restParams,
     appId,
@@ -129,4 +129,28 @@ const getSignStr = (originStr: string, responseKey: string): string => {
   return validateStr
 }
 
-export { sign, getSignStr, ALIPAY_ALGORITHM_MAPPING }
+// 结果验签
+const checkResponseSign = (
+  signStr: string,
+  responseKey: string,
+  alipayPublicKey: string,
+  signType: 'RSA' | 'RSA2'
+): boolean => {
+  // 带验签的参数不存在时返回失败
+  if (!signStr) {
+    return false
+  }
+
+  // 根据服务端返回的结果截取需要验签的目标字符串
+  const validateStr = getSignStr(signStr, responseKey)
+  // 服务端返回的签名
+  const serverSign = JSON.parse(signStr).sign
+
+  // 参数存在，并且是正常的结果（不包含 sub_code）时才验签
+  const verifier = crypto.createVerify(ALIPAY_ALGORITHM_MAPPING[signType])
+  verifier.update(validateStr, 'utf8')
+
+  return verifier.verify(alipayPublicKey, serverSign, 'base64')
+}
+
+export { sign, ALIPAY_ALGORITHM_MAPPING, checkResponseSign }
